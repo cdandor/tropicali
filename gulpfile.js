@@ -4,6 +4,7 @@ const cleanCSS = require("gulp-clean-css")
 const sourcemaps = require("gulp-sourcemaps")
 const browserSync = require("browser-sync").create()
 const imagemin = require("gulp-imagemin")
+const ghpages = require("gh-pages")
 
 function compileSass() {
   return src("src/css/styles.scss")
@@ -39,6 +40,10 @@ function startWatch() {
   watch("src/fonts/*", copyFonts)
   watch("src/img/*", copyImages)
 }
+async function deploy() {
+  ghpages.publish("dist")
+}
+exports.deploy = deploy
 
 exports.default = series(
   copyHtml,
