@@ -1,7 +1,7 @@
 @import "reset";
 @import "typography";
 
-$primary-color: #ca774a;
+$primary-color: red;
 $body-font: "Jost";
 $body-size: 24px;
 $mq-medium: 600px;
@@ -11,12 +11,14 @@ $mq-medium: 600px;
     @content;
   }
 }
+
 @mixin center() {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 body {
   font-family: $body-font;
   font-size: $body-size;

@@ -9,6 +9,12 @@
   "author": "Clinton Andor",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "browser-sync": "^2.29.1",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "sass": "^1.62.1"
   }
 }
