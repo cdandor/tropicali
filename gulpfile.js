@@ -1,14 +1,34 @@
 const { series, watch, src, dest } = require("gulp")
-const sass = require("gulp-sass")(require("sass"))
+//css
+const postCSS = require("gulp-postcss")
 const cleanCSS = require("gulp-clean-css")
 const sourcemaps = require("gulp-sourcemaps")
+//browser testing
 const browserSync = require("browser-sync").create()
+//image resizing
 const imagemin = require("gulp-imagemin")
+//github pages
+const ghpages = require("gh-pages")
 
-function compileSass() {
-  return src("src/css/styles.scss")
+const concat = require("gulp-concat")
+
+function compileCss() {
+  return src([
+    "src/css/reset.css",
+    "src/css/typography.css",
+    "src/css/styles.css",
+  ])
     .pipe(sourcemaps.init())
-    .pipe(sass().on("error", sass.logError))
+    .pipe(
+      postCSS([
+        require("autoprefixer"),
+        require("postcss-preset-env")({
+          stage: 1,
+          browsers: ["IE 11", "last 2 versions"],
+        }),
+      ])
+    )
+    .pipe(concat("styles.css"))
     .pipe(cleanCSS({ compatibility: "ie8" }))
     .pipe(sourcemaps.write())
     .pipe(dest("dist"))
@@ -35,14 +55,18 @@ function startWatch() {
   })
 
   watch("src/*.html", copyHtml).on("change", browserSync.reload)
-  watch("src/css/styles.scss", compileSass)
+  watch("src/css/*", compileCss)
   watch("src/fonts/*", copyFonts)
   watch("src/img/*", copyImages)
 }
+async function deploy() {
+  ghpages.publish("dist")
+}
+exports.deploy = deploy
 
 exports.default = series(
   copyHtml,
-  compileSass,
+  compileCss,
   copyFonts,
   copyImages,
   startWatch
